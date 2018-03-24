@@ -35,6 +35,7 @@ pub struct RPC;
 
 use std::ffi::{CStr, CString, NulError};
 use std::ptr;
+use std::time::UNIX_EPOCH;
 
 impl RPC {
     pub fn init<EH: EventHandlers>(app_id: &str, auto_register: bool, steam_id: Option<&str>) -> Result<RPC, NulError> {
@@ -83,6 +84,77 @@ impl RPC {
         }
 
         Ok(RPC)
+    }
+
+    pub fn update_presence(&self, presence: RichPresence) -> Result<(), NulError> {
+        let sys_presence = sys::DiscordRichPresence {
+            state: match presence.state {
+                None => ptr::null(),
+                Some(state) => CString::new(state.clone())?.into_raw(),
+            },
+            details: match presence.details {
+                None => ptr::null(),
+                Some(details) => CString::new(details)?.into_raw(),
+            },
+            startTimestamp: match presence.start_time {
+                None => 0,
+                Some(time) => time.duration_since(UNIX_EPOCH).unwrap().as_secs() as i64,
+            },
+            endTimestamp: match presence.end_time {
+                None => 0,
+                Some(time) => time.duration_since(UNIX_EPOCH).unwrap().as_secs() as i64,
+            },
+            largeImageKey: match presence.large_image_key {
+                None => ptr::null(),
+                Some(key) => CString::new(key)?.into_raw(),
+            },
+            largeImageText: match presence.large_image_text {
+                None => ptr::null(),
+                Some(text) => CString::new(text)?.into_raw(),
+            },
+            smallImageKey: match presence.small_image_key {
+                None => ptr::null(),
+                Some(key) => CString::new(key)?.into_raw(),
+            },
+            smallImageText: match presence.small_image_text {
+                None => ptr::null(),
+                Some(text) => CString::new(text)?.into_raw(),
+            },
+            partyId: match presence.party_id {
+                None => ptr::null(),
+                Some(id) => CString::new(id)?.into_raw(),
+            },
+            partySize: match presence.party_size {
+                None => 0,
+                Some(size) => size as libc::c_int,
+            },
+            partyMax: match presence.party_max {
+                None => 0,
+                Some(max) => max as libc::c_int,
+            },
+            matchSecret: ptr::null(), // deprecated
+            joinSecret: match presence.join_secret {
+                None => ptr::null(),
+                Some(secret) => CString::new(secret)?.into_raw(),
+            },
+            spectateSecret: match presence.spectate_secret {
+                None => ptr::null(),
+                Some(secret) => CString::new(secret)?.into_raw(),
+            },
+            instance: 0, // deprecated
+        };
+
+        unsafe {
+            sys::Discord_UpdatePresence(&sys_presence);
+        }
+
+        Ok(())
+    }
+
+    pub fn clear_presence(&self) {
+        unsafe {
+            sys::Discord_ClearPresence();
+        }
     }
 }
 

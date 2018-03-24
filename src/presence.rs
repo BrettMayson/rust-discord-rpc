@@ -1,4 +1,4 @@
-use std::time::Duration;
+use std::time::SystemTime;
 
 pub struct RichPresence {
     /// The user's current party status. Maximum of 128 bytes.
@@ -11,11 +11,11 @@ pub struct RichPresence {
     /// For example: `"Competitive - Captain's Mode"`, `"In Queue"`, `"Unranked PvP"`...
     pub details: Option<String>,
 
-    /// Time since game start. Including will show time as "elapsed".
-    pub start_time: Option<Duration>,
+    /// Time of game start. Including will show time as "elapsed".
+    pub start_time: Option<SystemTime>,
 
-    /// Time for game end. Including will show time as "remaining".
-    pub end_time: Option<Duration>,
+    /// Time of game end. Including will show time as "remaining".
+    pub end_time: Option<SystemTime>,
 
     /// Name of the uploaded image for the large profile artwork. Maximum of 32 bytes.
     pub large_image_key: Option<String>,
