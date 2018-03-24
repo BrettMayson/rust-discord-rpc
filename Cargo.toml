@@ -1,0 +1,9 @@
+[workspace]
+
+[package]
+name = "discord-rpc"
+version = "0.1.0"
+authors = ["Difarem <difarem@gmail.com>"]
+
+[dependencies]
+discord-rpc-sys = {path = "sys"}
