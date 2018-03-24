@@ -1,7 +1,7 @@
 extern crate discord_rpc;
 
 use std::time::SystemTime;
-use discord_rpc::{RPC, EventHandlers, RichPresence};
+use discord_rpc::{EventHandlers, RichPresence, RPC};
 
 const APPLICATION_ID: &'static str = "378906438590005272";
 

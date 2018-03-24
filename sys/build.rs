@@ -8,11 +8,16 @@ const RPC_VERSION: &'static str = "3.1.0";
 
 fn main() {
     // compiles the RPC library
-    let install_path = cmake::Config::new(format!("discord-rpc-{}", RPC_VERSION))
-        .build();
+    let install_path = cmake::Config::new(format!("discord-rpc-{}", RPC_VERSION)).build();
 
-    println!("cargo:rustc-link-search={}", install_path.join("lib").display());
-    println!("cargo:rustc-link-search={}", install_path.join("lib64").display());
+    println!(
+        "cargo:rustc-link-search={}",
+        install_path.join("lib").display()
+    );
+    println!(
+        "cargo:rustc-link-search={}",
+        install_path.join("lib64").display()
+    );
     let include_path = format!("discord-rpc-{}/include", RPC_VERSION);
 
     // generates the bindings to the RPC headers
