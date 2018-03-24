@@ -12,6 +12,13 @@ pub struct JoinRequest {
     pub avatar: String,
 }
 
+#[derive(Clone, Hash, PartialEq)]
+pub enum JoinRequestReply {
+    No,
+    Yes,
+    Ignore,
+}
+
 pub trait EventHandlers {
     fn ready() {}
 
@@ -23,7 +30,7 @@ pub trait EventHandlers {
 
     fn spectate_game(_secret: &str) {}
 
-    fn join_request(_request: JoinRequest) {}
+    fn join_request<R: FnOnce(JoinRequestReply)>(_request: JoinRequest, _respond: R) {}
 }
 
 pub struct RPC;
@@ -75,7 +82,13 @@ impl RPC {
                     .to_string_lossy()
                     .into_owned(),
             };
-            EH::join_request(req);
+            EH::join_request(req, |reply| {
+                sys::Discord_Respond((*join_request).userId, match reply {
+                    JoinRequestReply::No => sys::DISCORD_REPLY_NO,
+                    JoinRequestReply::Yes => sys::DISCORD_REPLY_YES,
+                    JoinRequestReply::Ignore => sys::DISCORD_REPLY_IGNORE,
+                } as libc::c_int);
+            });
         }
 
         let mut sys_handlers = sys::DiscordEventHandlers {
