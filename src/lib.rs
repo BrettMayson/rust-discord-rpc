@@ -83,11 +83,14 @@ impl RPC {
                     .into_owned(),
             };
             EH::join_request(req, |reply| {
-                sys::Discord_Respond((*join_request).userId, match reply {
-                    JoinRequestReply::No => sys::DISCORD_REPLY_NO,
-                    JoinRequestReply::Yes => sys::DISCORD_REPLY_YES,
-                    JoinRequestReply::Ignore => sys::DISCORD_REPLY_IGNORE,
-                } as libc::c_int);
+                sys::Discord_Respond(
+                    (*join_request).userId,
+                    match reply {
+                        JoinRequestReply::No => sys::DISCORD_REPLY_NO,
+                        JoinRequestReply::Yes => sys::DISCORD_REPLY_YES,
+                        JoinRequestReply::Ignore => sys::DISCORD_REPLY_IGNORE,
+                    } as libc::c_int,
+                );
             });
         }
 
