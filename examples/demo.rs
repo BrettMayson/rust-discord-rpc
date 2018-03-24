@@ -25,13 +25,13 @@ fn main() {
     let rpc = RPC::init::<Handlers>(APPLICATION_ID, false, None).unwrap();
 
     let presence = RichPresence {
-        details: Some("IT works".to_string()),
-        state: Some("im CRYING".to_string()),
+        details: Some("Details".to_string()),
+        state: Some("State".to_string()),
         start_time: Some(SystemTime::now()),
-        large_image_key: Some("kotori".to_string()),
-        large_image_text: Some("blerghfdsg".to_string()),
-        small_image_key: Some("jhon_egbert".to_string()),
-        small_image_text: Some("John Egbert".to_string()),
+        large_image_key: Some("large_image".to_string()),
+        large_image_text: Some("large image".to_string()),
+        small_image_key: Some("small_image".to_string()),
+        small_image_text: Some("small image".to_string()),
         party_size: Some(4),
         party_max: Some(13),
         ..Default::default()
