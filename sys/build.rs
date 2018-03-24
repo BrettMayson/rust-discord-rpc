@@ -12,6 +12,7 @@ fn main() {
         .build();
 
     println!("cargo:rustc-link-search={}", install_path.join("lib").display());
+    println!("cargo:rustc-link-search={}", install_path.join("lib64").display());
     let include_path = format!("discord-rpc-{}/include", RPC_VERSION);
 
     // generates the bindings to the RPC headers
@@ -26,4 +27,7 @@ fn main() {
     bindings
         .write_to_file(out_path.join("bindings.rs"))
         .expect("Couldn't write bindings!");
+
+    println!("cargo:rustc-link-lib=static=discord-rpc");
+    println!("cargo:rustc-flags=-l dylib=stdc++");
 }

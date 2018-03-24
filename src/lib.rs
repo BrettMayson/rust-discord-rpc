@@ -4,6 +4,7 @@ extern crate libc;
 mod presence;
 pub use presence::RichPresence;
 
+#[derive(Default, Clone, Hash, PartialEq)]
 pub struct JoinRequest {
     pub user_id: String,
     pub username: String,
@@ -154,6 +155,14 @@ impl RPC {
     pub fn clear_presence(&self) {
         unsafe {
             sys::Discord_ClearPresence();
+        }
+    }
+
+    /// Invokes any pending callbacks from Discord on the calling thread. This
+    /// function is allegedly thread safe.
+    pub fn run_callbacks(&self) {
+        unsafe {
+            sys::Discord_RunCallbacks();
         }
     }
 }
