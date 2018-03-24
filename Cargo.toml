@@ -6,4 +6,5 @@ version = "0.1.0"
 authors = ["Difarem <difarem@gmail.com>"]
 
 [dependencies]
+libc = "0.2.39"
 discord-rpc-sys = {path = "sys"}
