@@ -1,6 +1,6 @@
 use std::time::{SystemTime, UNIX_EPOCH};
 
-#[derive(Default, Clone, Hash, PartialEq)]
+#[derive(Default, Clone, Hash, PartialEq, Debug)]
 pub struct RichPresence {
     /// The user's current party status. Maximum of 128 bytes.
     ///
