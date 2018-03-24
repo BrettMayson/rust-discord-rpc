@@ -1,6 +1,7 @@
 use std::time::{SystemTime, UNIX_EPOCH};
 
 #[derive(Default, Clone, Hash, PartialEq, Debug)]
+/// Defines the data displayed on the rich presence screen on a user's profile.
 pub struct RichPresence {
     /// The user's current party status. Maximum of 128 bytes.
     ///
@@ -52,7 +53,7 @@ use std::ffi::{CString, NulError};
 use std::ptr;
 
 impl RichPresence {
-    pub(crate) fn to_sys(self) -> Result<sys::DiscordRichPresence, NulError> {
+    pub(crate) fn wrap(self) -> Result<sys::DiscordRichPresence, NulError> {
         Ok(sys::DiscordRichPresence {
             state: match self.state {
                 None => ptr::null(),
