@@ -1,7 +1,7 @@
-extern crate discord_rpc;
+extern crate discord_rpc_sdk;
 
 use std::time::SystemTime;
-use discord_rpc::{EventHandlers, JoinRequest, JoinRequestReply, RichPresence, RPC};
+use discord_rpc_sdk::{EventHandlers, JoinRequest, JoinRequestReply, RichPresence, RPC};
 
 const APPLICATION_ID: &'static str = "378906438590005272";
 
