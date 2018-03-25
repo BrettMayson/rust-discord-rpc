@@ -2,7 +2,7 @@
 members = ["sys"]
 
 [package]
-name = "discord-rpc"
+name = "discord-rpc-sdk"
 version = "0.1.0"
 authors = ["Difarem <difarem@gmail.com>"]
 
