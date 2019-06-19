@@ -1,10 +1,25 @@
-use super::{EventHandlers, JoinRequest, JoinRequestReply};
+use crate::{EventHandlers, discord_user::DiscordUser};
 use sys;
 use libc;
 use std::ffi::CStr;
 
-pub(crate) extern "C" fn ready_wrapper<EH: EventHandlers>() {
-    EH::ready();
+pub(crate) unsafe extern "C" fn ready_wrapper<EH: EventHandlers>(user: *const sys::DiscordUser) {
+    let req = DiscordUser {
+        user_id: CStr::from_ptr((*user).userId)
+            .to_string_lossy()
+            .into_owned(),
+        username: CStr::from_ptr((*user).username)
+            .to_string_lossy()
+            .into_owned(),
+        discriminator: CStr::from_ptr((*user).discriminator)
+            .to_string_lossy()
+            .into_owned(),
+        avatar: CStr::from_ptr((*user).avatar)
+            .to_string_lossy()
+            .into_owned(),
+    };
+    
+    EH::ready(req);
 }
 
 pub(crate) unsafe extern "C" fn disconnected_wrapper<EH: EventHandlers>(
@@ -32,30 +47,22 @@ pub(crate) unsafe extern "C" fn spectate_game_wrapper<EH: EventHandlers>(
 }
 
 pub(crate) unsafe extern "C" fn join_request_wrapper<EH: EventHandlers>(
-    join_request: *const sys::DiscordJoinRequest,
+    user: *const sys::DiscordUser,
 ) {
-    let req = JoinRequest {
-        user_id: CStr::from_ptr((*join_request).userId)
+    let req = DiscordUser {
+        user_id: CStr::from_ptr((*user).userId)
             .to_string_lossy()
             .into_owned(),
-        username: CStr::from_ptr((*join_request).username)
+        username: CStr::from_ptr((*user).username)
             .to_string_lossy()
             .into_owned(),
-        discriminator: CStr::from_ptr((*join_request).discriminator)
+        discriminator: CStr::from_ptr((*user).discriminator)
             .to_string_lossy()
             .into_owned(),
-        avatar: CStr::from_ptr((*join_request).avatar)
+        avatar: CStr::from_ptr((*user).avatar)
             .to_string_lossy()
             .into_owned(),
     };
-    EH::join_request(req, |reply| {
-        sys::Discord_Respond(
-            (*join_request).userId,
-            match reply {
-                JoinRequestReply::No => sys::DISCORD_REPLY_NO,
-                JoinRequestReply::Yes => sys::DISCORD_REPLY_YES,
-                JoinRequestReply::Ignore => sys::DISCORD_REPLY_IGNORE,
-            } as libc::c_int,
-        );
-    });
+    
+    EH::join_request(req);
 }

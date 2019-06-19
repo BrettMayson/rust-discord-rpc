@@ -1,8 +1,8 @@
 extern crate discord_rpc_sys as sys;
 extern crate libc;
 
-mod join_request;
-pub use join_request::{JoinRequest, JoinRequestReply};
+mod discord_user;
+pub use discord_user::DiscordUser;
 
 mod presence;
 pub use presence::RichPresence;

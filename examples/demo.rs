@@ -1,15 +1,15 @@
 extern crate discord_rpc_sdk;
 
 use std::time::SystemTime;
-use discord_rpc_sdk::{EventHandlers, JoinRequest, JoinRequestReply, RichPresence, RPC};
+use discord_rpc_sdk::{EventHandlers, DiscordUser, RichPresence, RPC};
 
 const APPLICATION_ID: &'static str = "378906438590005272";
 
 struct Handlers;
 
 impl EventHandlers for Handlers {
-    fn ready() {
-        println!("We're ready!");
+    fn ready(user: DiscordUser) {
+        println!("We're ready! {:?}", user);
     }
 
     fn errored(errcode: i32, message: &str) {
@@ -28,9 +28,8 @@ impl EventHandlers for Handlers {
         println!("Spectating {}", secret);
     }
 
-    fn join_request<R: FnOnce(JoinRequestReply)>(request: JoinRequest, respond: R) {
-        println!("Join request from {:?}", request);
-        respond(JoinRequestReply::Yes);
+    fn join_request(from: DiscordUser) {
+        println!("Join request from {:?}", from);
     }
 }
 

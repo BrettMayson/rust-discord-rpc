@@ -4,7 +4,7 @@ extern crate cmake;
 use std::env;
 use std::path::PathBuf;
 
-const RPC_VERSION: &'static str = "3.1.0";
+const RPC_VERSION: &'static str = "3.4.0";
 
 fn main() {
     // compiles the RPC library
@@ -34,5 +34,13 @@ fn main() {
         .expect("Couldn't write bindings!");
 
     println!("cargo:rustc-link-lib=static=discord-rpc");
-    println!("cargo:rustc-flags=-l dylib=stdc++");
+    
+    let target_os = env::var("CARGO_CFG_TARGET_OS").unwrap();
+    
+    match target_os.as_str() {
+        "linux" => println!("cargo:rustc-link-lib=dylib=stdc++"),
+        "macos" => println!("cargo:rustc-link-lib=dylib=c++"),
+        "windows" => {},
+        _ => panic!("Unsupported platform!"),
+    }
 }
