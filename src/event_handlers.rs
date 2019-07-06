@@ -1,7 +1,7 @@
-use super::{JoinRequest, JoinRequestReply};
+use super::DiscordUser;
 
 pub trait EventHandlers {
-    fn ready() {}
+    fn ready(_user: DiscordUser) {}
 
     fn errored(_errcode: i32, _message: &str) {}
 
@@ -11,13 +11,13 @@ pub trait EventHandlers {
 
     fn spectate_game(_secret: &str) {}
 
-    fn join_request<R: FnOnce(JoinRequestReply)>(_request: JoinRequest, _respond: R) {}
+    fn join_request(_request: DiscordUser) {}
 }
 
 use sys;
 
 pub(crate) fn wrap<EH: EventHandlers>() -> sys::DiscordEventHandlers {
-    use event_wrappers::*;
+    use crate::event_wrappers::*;
 
     sys::DiscordEventHandlers {
         ready: Some(ready_wrapper::<EH>),
