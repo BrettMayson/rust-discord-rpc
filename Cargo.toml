@@ -14,7 +14,7 @@ categories = ["api-bindings", "games"]
 license = "MIT"
 
 [dependencies]
-libc = "0.2.39"
+libc = "0.2.66"
 
 [dependencies.discord-rpc-sys]
 path = "sys"

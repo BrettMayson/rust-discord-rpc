@@ -10,5 +10,5 @@ categories = ["external-ffi-bindings", "api-bindings", "games"]
 license = "MIT"
 
 [build-dependencies]
-bindgen = "0.26.3"
-cmake = "0.1.29"
+bindgen = "0.52.0"
+cmake = "0.1.42"
