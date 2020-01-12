@@ -3,7 +3,7 @@ members = ["sys"]
 
 [package]
 name = "discord-rpc-sdk"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["Difarem <difarem@gmail.com>"]
 
 description = "Rust bindings to the Discord RPC SDK"
